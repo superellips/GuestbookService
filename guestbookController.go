@@ -32,7 +32,7 @@ func CreateHandler(w http.ResponseWriter, r *http.Request) {
 	body := r.FormValue("body")
 	guestbook, err := parseJsonGuestbook(body)
 	if err != nil {
-		fmt.Println(err.Error())
+		return
 	}
 	guestbook.save()
 }
