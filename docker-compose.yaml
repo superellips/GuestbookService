@@ -1,0 +1,24 @@
+services:
+  guestbook:
+    container_name: guestbookservice
+    image: stjarnstoft/guestbookservice:dev
+    build:
+      context: .
+      target: dev
+    environment:
+      GB_CONSTRING: "mongodb://guestbookdb"
+    ports:
+      - "8080:8080"
+      - "2345:2345"
+    volumes:
+      - ./:/app
+  guestbook-db:
+    container_name: guestbookdb
+    image: mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - dbdata:/data/db
+
+volumes:
+  dbdata:
