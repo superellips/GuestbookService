@@ -1,6 +1,9 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
+	"io"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -9,15 +12,32 @@ import (
 
 type Guestbook struct {
 	Id              primitive.ObjectID `json:"id" bson:"_id,omitempty"`
-	OwnerId         primitive.ObjectID `json:"ownerId"`
-	Domain          string             `json:"domain"`
-	RequireApproval bool               `json:"requireApproval"`
+	OwnerId         primitive.ObjectID `json:"ownerId" bson:"ownerid"`
+	Domain          string             `json:"domain" bson:"domain"`
+	RequireApproval bool               `json:"requireApproval" bson:"requireapproval"`
 }
 
 func PostGuestbook(c *gin.Context) {
-	var newGuestbook Guestbook
-	if err := c.BindJSON(&newGuestbook); err != nil {
+	createRequest, err := io.ReadAll(c.Request.Body)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to read request data"})
 		return
+	}
+	var d map[string]interface{}
+	err = json.Unmarshal(createRequest, &d)
+	if err != nil {
+		fmt.Println("It got all hecked up.")
+		return
+	}
+	ownerId, err := primitive.ObjectIDFromHex(d["ownerId"].(string))
+	if err != nil {
+		fmt.Println("It got all hecked up.")
+		return
+	}
+	newGuestbook := Guestbook{
+		OwnerId:         ownerId,
+		Domain:          d["domain"].(string),
+		RequireApproval: d["requireApproval"].(bool),
 	}
 	// Persist logic
 	var db MongoDb
