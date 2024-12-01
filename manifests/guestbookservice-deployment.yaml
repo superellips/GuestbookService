@@ -17,12 +17,12 @@ spec:
       containers:
       - name: guestbookservice-container
         image: ghcr.io/superellips/guestbookservice:latest
-        resources:
-          limits:
-            cpu: "10"
-            memory: "100Mi"
-          requests:
-            cpu: "10 "
-            memory: "50Mi"
+        # resources:
+        #   limits:
+        #     cpu: "10"
+        #     memory: "100Mi"
+        #   requests:
+        #     cpu: "10 "
+        #     memory: "50Mi"
         ports:
         - containerPort: 8080
