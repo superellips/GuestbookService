@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "guestbookservice-deployment"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "guestbookservice-app"
+  template:
+    metadata:
+      labels:
+        app: "guestbookservice-app"
+    spec:
+      imagePullSecrets:
+      - name: regcred
+      containers:
+      - name: guestbookservice-container
+        image: ghcr.io/superellips/guestbookservice:latest
+        resources:
+          limits:
+            cpu: "10"
+            memory: "100Mi"
+          requests:
+            cpu: "10 "
+            memory: "50Mi"
+        ports:
+        - containerPort: 8080
