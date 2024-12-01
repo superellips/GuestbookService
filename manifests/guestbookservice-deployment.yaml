@@ -16,7 +16,7 @@ spec:
       - name: regcred
       containers:
       - name: guestbookservice-container
-        image: ghcr.io/superellips/guestbookservice:e381e2fd3818ca2c362bc98c4c81b08df7b54f3e
+        image: ghcr.io/superellips/guestbookservice:41bba23d36c89e26d56be41d37f262a408e6aae6
         # resources:
         #   limits:
         #     cpu: "10"
